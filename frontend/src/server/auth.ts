@@ -3,10 +3,11 @@ import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
+  type Session,
 } from "next-auth";
-import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
-
+import { type AdapterUser, type Adapter } from "next-auth/adapters";
+import { type JWT } from "next-auth/jwt";
+import Email from "next-auth/providers/email";
 import { env } from "~/env";
 import { db } from "~/server/db";
 
@@ -20,16 +21,48 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      email: string;
+      name: string;
+      onboarded: boolean;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    id: string;
+    email: string;
+    name: string;
+    onboarded: boolean;
+  }
 }
+
+const EmailProvider = Email({
+  server: {
+    host: env.EMAIL_HOST,
+    port: Number(env.EMAIL_PORT),
+    auth: {
+      user: env.EMAIL_USER,
+      pass: env.EMAIL_PASSWORD,
+    },
+  },
+  from: `HoosInvesting <${env.EMAIL_FROM}>`,
+});
+
+export const SEVEN_DAYS_IN_SECONDS = 604800;
+
+interface SessionCallbackParams {
+  session: Session;
+  token: JWT;
+  user: AdapterUser;
+  newSession: unknown;
+  trigger: "update";
+}
+
+const session = ({ session, user }: SessionCallbackParams) => {
+  if (session.user) {
+    session.user = { ...user };
+  }
+  return session;
+};
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -38,20 +71,10 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session,
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
     /**
      * ...add more providers here.
      *
@@ -61,7 +84,15 @@ export const authOptions: NextAuthOptions = {
      *
      * @see https://next-auth.js.org/providers/github
      */
+    EmailProvider,
   ],
+
+  secret: env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "database",
+    maxAge: SEVEN_DAYS_IN_SECONDS,
+    updateAge: SEVEN_DAYS_IN_SECONDS,
+  },
 };
 
 /**
