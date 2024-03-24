@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        "general-sans": "var(--font-general-sans)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
