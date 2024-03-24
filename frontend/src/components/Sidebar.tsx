@@ -17,11 +17,11 @@ const SIDEBAR_TABS = [
     icon: <RxListBullet className="h-5 w-5" />,
     slug: "/dashboard/list",
   },
-  {
-    title: "Settings",
-    icon: <RxGear className="h-5 w-5" />,
-    slug: "/dashboard/settings",
-  },
+  // {
+  //   title: "Settings",
+  //   icon: <RxGear className="h-5 w-5" />,
+  //   slug: "/dashboard/settings",
+  // },
 ];
 
 export function Sidebar() {
@@ -29,7 +29,7 @@ export function Sidebar() {
   return (
     <div className="fixed left-0 top-0 flex h-full w-[248px] flex-col bg-sidebar-background p-4">
       <div className="pb-4">
-        <h1 className="text-3xl font-semibold text-neutral-50">Impact</h1>
+        <h1 className="text-3xl font-semibold text-neutral-50">Alignly</h1>
       </div>
       <ul className="w-full space-y-1">
         {SIDEBAR_TABS.map((tab) => (

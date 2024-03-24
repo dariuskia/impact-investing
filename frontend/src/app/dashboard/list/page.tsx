@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import AddMediaItem from "~/components/AddMediaItem";
 import MediaItemList from "~/components/MediaItemList";
 import Sidebar from "~/components/Sidebar";
 import { getServerAuthSession } from "~/server/auth";
@@ -28,6 +29,9 @@ export default async function MediaList() {
           <p className="pt-1 text-lg text-neutral-600">
             Add new media items to your context for portfolio creation.
           </p>
+        </div>
+        <div className="flex items-center">
+          <AddMediaItem />
         </div>
         <MediaItemList />
       </div>

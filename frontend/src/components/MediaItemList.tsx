@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "@radix-ui/react-label";
+// import { Button } from "./ui/button";
+// import { Input } from "./ui/input";
+// import { Label } from "@radix-ui/react-label";
 
 interface MediaItem {
   id: string;
@@ -19,11 +19,11 @@ interface MediaItem {
 }
 
 function MediaItemList() {
-  const [url, setURL] = useState("");
-  const [note, setNote] = useState("some testing note");
+  // const [url, setURL] = useState("");
+  // const [note, setNote] = useState("some testing note");
   const [mediaItems, setMediaItems] = useState<MediaItem[] | null>(null);
 
-  const createMediaItem = api.user.addMediaItem.useMutation();
+  // const createMediaItem = api.user.addMediaItem.useMutation();
   const getMediaItems = api.mediaItem.getMediaItems.useQuery({});
   const deleteMediaItem = api.mediaItem.deleteMediaItem.useMutation();
 
@@ -33,21 +33,37 @@ function MediaItemList() {
     }
   }, [getMediaItems.data]);
 
-  const createNewMediaItem = async () => {
-    createMediaItem.mutate({ url, note });
-    await getMediaItems.refetch();
-    setURL("");
-    setNote("");
-  };
+  // const createNewMediaItem = async () => {
+  //   createMediaItem.mutate({ url, note });
+  //   await getMediaItems.refetch();
+  //   setURL("");
+  //   setNote("");
+  // };
 
   const handleRemoveMediaItem = async (id: string) => {
     deleteMediaItem.mutate({ id });
     await getMediaItems.refetch();
   };
 
+  // const generatePortfolio = async () => {
+  //   const response = await fetch(
+  //     "https://superb-mighty-tortoise.ngrok-free.app/search",
+  //     {
+  //       method: "POST",
+  //       body: JSON.stringify({ userid: "65ffdc76de87564a15e4bf94" }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     },
+  //   );
+
+  //   const jsonData: unknown = await response.json();
+  //   console.log(jsonData);
+  // };
+
   return (
-    <div className="w-full space-y-4">
-      <div className="grid"></div>
+    <div className="w-full space-y-4 pt-8">
+      {/* <div className="grid"></div>
       <div className="grid space-y-2 rounded-xl border p-4">
         <Label htmlFor="url">Media URL</Label>
         <Input
@@ -71,11 +87,20 @@ function MediaItemList() {
           }}
           placeholder="Notes about the article."
         />
-        <Button className="w-full" onClick={createNewMediaItem} type="button">
-          Add new item
-        </Button>
-      </div>
-      {/* <div className="h-px w-full bg-neutral-500/20" /> */}
+        <div className="grid grid-cols-2 gap-4">
+          <Button className="w-full" onClick={createNewMediaItem} type="button">
+            Add new item
+          </Button>
+          <Button
+            className="w-full"
+            variant={"secondary"}
+            onClick={generatePortfolio}
+            type="button"
+          >
+            Generate portfolio
+          </Button>
+        </div>
+      </div> */}
       <div className="space-y-4">
         {mediaItems?.map((item) => (
           <div key={item.url} className="grid space-y-1 rounded-xl border p-4">
@@ -89,7 +114,7 @@ function MediaItemList() {
               </a>
             </div>
             <button
-              className="font-sans text-sm font-medium text-red-600"
+              className="w-fit rounded-full bg-red-100/75 px-3 py-1 font-sans text-sm font-medium text-red-600"
               type="button"
               onClick={() => handleRemoveMediaItem(item.id)}
             >
@@ -99,7 +124,7 @@ function MediaItemList() {
         ))}
       </div>
       {!mediaItems && (
-        <div className="">
+        <div className="flex w-full justify-center text-center">
           <p className="">You have no media items.</p>
         </div>
       )}

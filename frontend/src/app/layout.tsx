@@ -17,8 +17,8 @@ const generalSans = localFont({
 });
 
 export const metadata = {
-  title: "Impact Investing",
-  description: "AI-Powered Impact Investing Platform",
+  title: "Alignly",
+  description: "Put your money where your heart is.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
