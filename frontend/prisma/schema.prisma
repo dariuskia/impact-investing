@@ -17,6 +17,7 @@ model User {
     onboarded     Boolean     @default(false)
     name          String?     @default("")
     balance       Float       @default(0)
+    questionnaire Json
     createdAt     DateTime    @default(now())
     updatedAt     DateTime    @updatedAt
     session       Session[]
@@ -47,6 +48,8 @@ model MediaItem {
     id          String   @id @default(auto()) @map("_id") @db.ObjectId
     type        String
     url         String
+    title       String
+    content     String
     description String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
