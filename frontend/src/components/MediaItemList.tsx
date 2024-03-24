@@ -76,7 +76,7 @@ function MediaItemList() {
           Add new item
         </Button>
       </div>
-      <div className="h-px w-full bg-neutral-500/20" />
+      {/* <div className="h-px w-full bg-neutral-500/20" /> */}
       <div className="space-y-4">
         {mediaItems?.map((item) => (
           <div key={item.url} className="grid space-y-1 rounded-xl border p-4">

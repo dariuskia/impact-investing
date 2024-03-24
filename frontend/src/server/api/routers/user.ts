@@ -3,15 +3,15 @@ import * as cheerio from "cheerio";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
-enum QuestionResponse {
-  INDIFFERENT = "Indifferent",
-  STRONGLY_AGREE = "Strongly Agree",
-  STRONGLY_DISAGREE = "Strongly Disagree",
-  DISAGREE = "Disagree",
-  AGREE = "Agree",
-}
+// enum QuestionResponse {
+//   INDIFFERENT = "Indifferent",
+//   STRONGLY_AGREE = "Strongly Agree",
+//   STRONGLY_DISAGREE = "Strongly Disagree",
+//   DISAGREE = "Disagree",
+//   AGREE = "Agree",
+// }
 
-type Questionnaire = Record<number, QuestionResponse>;
+// type Questionnaire = Record<number, QuestionResponse>;
 
 export const userRouter = createTRPCRouter({
   updateQuestionnaire: protectedProcedure

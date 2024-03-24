@@ -18,8 +18,19 @@ export default async function Home() {
       <div className="w-[248px]">
         <Sidebar />
       </div>
-      <div className="mx-auto flex h-full min-h-screen w-full max-w-xl flex-1 py-10 md:py-16">
-        dasdsa
+      <div className="mx-auto flex h-full min-h-screen w-full max-w-4xl flex-1 flex-col py-10 md:py-16">
+        <h1 className="pb-10 font-general-sans text-3xl font-bold">
+          Welcome back
+        </h1>
+        <div className="gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded-lg bg-white p-4 shadow">heee</div>
+            <div className="rounded-lg bg-white p-4 shadow">heee</div>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            <div className="rounded-lg bg-white p-4 shadow">table</div>
+          </div>
+        </div>
       </div>
     </main>
   );

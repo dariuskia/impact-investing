@@ -19,7 +19,7 @@ export default async function MediaList() {
       <div className="w-[248px]">
         <Sidebar />
       </div>
-      <div className="mx-auto flex h-full min-h-screen w-full max-w-xl flex-1 flex-col py-10 md:py-16">
+      <div className="mx-auto flex h-full min-h-screen w-full max-w-4xl flex-1 flex-col py-10 md:py-16">
         <h1 className="font-general-sans text-3xl font-bold text-neutral-900">
           Media List
         </h1>
@@ -29,6 +29,7 @@ export default async function MediaList() {
             Add new media items to your context for portfolio creation.
           </p>
         </div>
+        <AddMediaItem />
         <MediaItemList />
       </div>
     </main>
