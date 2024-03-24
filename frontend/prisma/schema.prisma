@@ -16,10 +16,12 @@ model User {
     emailVerified DateTime?
     onboarded     Boolean     @default(false)
     name          String?     @default("")
+    balance       Float       @default(0)
     createdAt     DateTime    @default(now())
     updatedAt     DateTime    @updatedAt
-    Session       Session[]
-    MediaItem     MediaItem[]
+    session       Session[]
+    mediaItems    MediaItem[]
+    portfolio     Stock[]
 }
 
 model Session {
@@ -43,11 +45,23 @@ model VerificationToken {
 
 model MediaItem {
     id          String   @id @default(auto()) @map("_id") @db.ObjectId
-    userId      String   @map("id") @db.ObjectId
     type        String
     url         String
     description String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
+    userId      String   @map("id") @db.ObjectId
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Stock {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    symbol      String   @unique
+    allocation  Float
+    name        String
+    description String // Reason why this stock was chosen
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    userId      String   @map("id") @db.ObjectId
     user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
