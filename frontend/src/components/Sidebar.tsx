@@ -6,8 +6,6 @@ import Link from "next/link";
 import { RxDashboard, RxListBullet, RxGear } from "react-icons/rx";
 import { cn } from "~/lib/utils";
 
-const SLUG_PREFIX = "/dashboard";
-
 const SIDEBAR_TABS = [
   {
     title: "Home",
@@ -36,7 +34,7 @@ export function Sidebar() {
       <ul className="w-full space-y-1">
         {SIDEBAR_TABS.map((tab) => (
           <li key={tab.title} className="w-full">
-            <Link href={SLUG_PREFIX + tab.slug}>
+            <Link href={tab.slug}>
               <div
                 className={cn(
                   "flex w-full items-center space-x-3 rounded-xl px-3 py-3 transition-colors duration-150",
