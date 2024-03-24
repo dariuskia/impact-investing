@@ -45,17 +45,17 @@ model VerificationToken {
 }
 
 model MediaItem {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
-    type        String
-    url         String
-    title       String
-    content     String
-    description String
-    note        String
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    userId      String   @map("id") @db.ObjectId
-    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    type      String
+    url       String
+    title     String
+    content   String
+    // description String
+    note      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userId    String   @map("id") @db.ObjectId
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Stock {

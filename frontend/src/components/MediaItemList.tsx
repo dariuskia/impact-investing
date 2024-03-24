@@ -12,7 +12,6 @@ interface MediaItem {
   url: string;
   title: string;
   content: string;
-  description: string;
   note: string;
   createdAt: Date;
   updatedAt: Date;
@@ -50,7 +49,7 @@ function MediaItemList() {
     <div className="w-full space-y-4">
       <div className="grid"></div>
       <div className="grid space-y-2 rounded-xl border p-4">
-        <Label htmlFor="url">Article URL</Label>
+        <Label htmlFor="url">Media URL</Label>
         <Input
           name="url"
           type="text"

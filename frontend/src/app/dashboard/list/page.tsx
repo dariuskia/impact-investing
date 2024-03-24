@@ -29,7 +29,6 @@ export default async function MediaList() {
             Add new media items to your context for portfolio creation.
           </p>
         </div>
-        <AddMediaItem />
         <MediaItemList />
       </div>
     </main>
