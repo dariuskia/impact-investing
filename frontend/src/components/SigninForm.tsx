@@ -37,7 +37,7 @@ export default function SigninForm() {
     const response = await signIn("email", {
       email: values.email,
       redirect: false,
-      callbackUrl: `/dashboard`,
+      callbackUrl: `/dashboard/home`,
     });
 
     console.log(response);

@@ -52,8 +52,6 @@ function Questionnaire() {
   const updateQuestionnaire = api.user.updateQuestionnaire.useMutation({});
 
   const submitAnswers = async () => {
-    console.log(answers);
-
     updateQuestionnaire.mutate({ questionnaire: JSON.stringify(answers) });
 
     await router.push("/dashboard/home");
