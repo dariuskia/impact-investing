@@ -61,7 +61,7 @@ model MediaItem {
 model Stock {
     id          String   @id @default(auto()) @map("_id") @db.ObjectId
     symbol      String   @unique
-    allocation  Float
+    allocation  Int
     name        String
     description String // Reason why this stock was chosen
     createdAt   DateTime @default(now())
