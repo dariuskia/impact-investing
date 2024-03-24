@@ -10,27 +10,26 @@ const SLUG_PREFIX = "/dashboard";
 
 const SIDEBAR_TABS = [
   {
-    title: "Dashboard",
+    title: "Home",
     icon: <RxDashboard className="h-5 w-5" />,
-    slug: "/dashboard",
+    slug: "/dashboard/home",
   },
   {
     title: "List",
     icon: <RxListBullet className="h-5 w-5" />,
-    slug: "/list",
+    slug: "/dashboard/list",
   },
   {
     title: "Settings",
     icon: <RxGear className="h-5 w-5" />,
-    slug: "/settings",
+    slug: "/dashboard/settings",
   },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
-  const dashboardPage = pathname + SLUG_PREFIX;
   return (
-    <div className="bg-sidebar-background fixed left-0 top-0 flex h-full w-64 flex-col p-4">
+    <div className="fixed left-0 top-0 flex h-full w-[248px] flex-col bg-sidebar-background p-4">
       <div className="pb-4">
         <h1 className="text-3xl font-semibold text-neutral-50">Impact</h1>
       </div>
@@ -42,9 +41,9 @@ export function Sidebar() {
                 className={cn(
                   "flex w-full items-center space-x-3 rounded-xl px-3 py-3 transition-colors duration-150",
                   {
-                    "bg-neutral-500/15 text-white": dashboardPage === tab.slug,
+                    "bg-neutral-500/15 text-white": pathname === tab.slug,
                     "text-white/50 hover:bg-neutral-500/15 hover:text-white":
-                      dashboardPage !== tab.slug,
+                      pathname !== tab.slug,
                   },
                 )}
               >
