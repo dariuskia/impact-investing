@@ -17,6 +17,10 @@ import yt_dlp
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import MarketOrderRequest, LimitOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
+from alpaca.data.historical import StockHistoricalDataClient
+from alpaca.data.requests import StockBarsRequest
+from alpaca.data.timeframe import TimeFrame
+
 
 from dotenv import load_dotenv
 
@@ -35,6 +39,7 @@ load_dotenv()
 alpaca_api_key = os.environ.get("APCA-API-KEY-ID")
 alpaca_secret_key = os.environ.get("APCA-API-SECRET-KEY")
 trading_client = TradingClient(alpaca_api_key, alpaca_secret_key, paper=True)
+historicalClient = StockHistoricalDataClient(alpaca_api_key, alpaca_secret_key)
 
 
 openAIClient = OpenAI()
@@ -136,11 +141,11 @@ def read_root():
     return {"Hello": "World"}
 
 
-def submit_trade(symbol):
+def submit_trade(symbol, qty):
     # preparing market order
     market_order_data = MarketOrderRequest(
                         symbol=symbol,
-                        qty=1,
+                        qty=qty,
                         side=OrderSide.BUY,
                         time_in_force=TimeInForce.DAY
                         )
@@ -172,6 +177,7 @@ def userget(item: UserItem):
 @app.post("/search")
 # def search():
 def search(item: UserItem):
+    print("received search request")
     media_items = mediaCollection.find({"id": ObjectId(item.userid)})
     companies = {"companies": []} # company_name: explanation
     for item in media_items:
@@ -180,7 +186,7 @@ def search(item: UserItem):
             {"role": "user", "content": "Here is the transcript for my article, titled {TITLE}:\n{TRANSCRIPT}".format(TITLE=item["title"], TRANSCRIPT=item["content"])},
         ]
         response =  openAIClient.chat.completions.create(
-            model="gpt-3.5-turbo-0125",
+            model="gpt-4-turbo-preview",
             messages=messages
         )
         summary = response.choices[0].message.content
@@ -202,19 +208,86 @@ def search(item: UserItem):
             companies["companies"].append({
                 "company_name": vector["name"],
                 "symbol": vector["symbol"],
+                "qty": 1,
                 "explanation": explanation
             })
-        for company in companies["companies"]:
-            submit_trade(company["symbol"])
         return companies # {"companies": [{"company_name": "Apple", "explanation": "Apple is a great company because..."}]}
-        
+    
+class CompanyItem(BaseModel):
+    company_name: str
+    symbol: str
+    qty: int
+    explanation: str
+    
+class CompanyListItem(BaseModel):
+    companies: List[CompanyItem]
+    userid: str
+
+@app.post("/createportfolio")
+def createportfolio(item: CompanyListItem):
+    print(item)
+    print(item.companies)
+    for company in item.companies:
+        try:
+            submit_trade(company.symbol, company.qty)  
+            user = userdbClient["hoohack"]["User"].find_one({"id": ObjectId(item.userid)})  
+            userdbClient["hoohack"]["Stock"].insert_one({
+                "symbol": company.symbol,  
+                "allocation": company.qty,  
+                "name": company.company_name, 
+                "description": company.explanation,
+                "userId": ObjectId(item.userid),
+                "user": user
+            })
+        except Exception as e:
+            print(e)
+
+    return {"response": 200}
+
+@app.post("/insights")
+def insights(item: UserItem):
+    stocks = list(userdbClient["hoohack"]["Stock"].find({"userId": ObjectId(item.userid)}))
+    historical = []
+    last_quote = dict()
+    for stock in stocks:
+        historical_request_params = StockBarsRequest(
+        symbol_or_symbols=stock["symbol"],
+        timeframe=TimeFrame.Day,
+        start="2023-03-25",
+        end="2024-03-24"
+        )
+        stock_bars = historicalClient.get_stock_bars(historical_request_params).df
+        stock_bars['date'] = stock_bars.index.map(lambda x: x[1].strftime('%Y-%m-%d'))
+        stock_bars.set_index('date', inplace=True)
+        last_quote[stock['symbol']] = stock_bars['close'].iloc[-1]
+        historical.append({
+            "symbol": stock["symbol"],
+            "history": 
+            stock_bars['close'].to_json()})
+
+    res = {
+        "pie": [{"id": stock["symbol"], "value": stock["allocation"]} for stock in stocks],
+        "table": [{
+            "name": stock["name"],
+            "symbol": stock["symbol"],
+            "qty": stock["allocation"],
+            "description": stock["description"],
+            "price": last_quote[stock["symbol"]]
+        } for stock in stocks],
+        "historical": historical
+    }
+    res.update(historical)
+    print(res)
+    return res
 
 class VideoItem(BaseModel):
     videoURL: str
 
 @app.post("/transcript")
 def transcript(item: VideoItem):
+    print(item)
     vidURL = item.videoURL
+    print(vidURL)
 
     ydl_opts = {
         'format': 'm4a/bestaudio/best',
@@ -241,12 +314,4 @@ def transcript(item: VideoItem):
         model="whisper-1", 
         file=audio_file
         )
-        return {"transcription": transcription.text}
-
-class SiteItem(BaseModel):
-    data: str
-
-@app.post("/extension")
-def extension(item: SiteItem):
-    print(item.data)
-    return None
+        return {"transcription": transcription.text, "title": title}
