@@ -87,7 +87,7 @@ function AddMediaItem() {
         "https://superb-mighty-tortoise.ngrok-free.app/search",
         {
           method: "POST",
-          body: JSON.stringify({ userid: "65ffdc76de87564a15e4bf94" }),
+          body: JSON.stringify({ userid: "66005f46652067a0f0c4c762" }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -116,7 +116,7 @@ function AddMediaItem() {
     }));
 
     const bodyData = JSON.stringify({
-      userid: "65ffdc76de87564a15e4bf94",
+      userid: "66005f46652067a0f0c4c762",
       companies: updatedPortfolioAllocation,
     });
 

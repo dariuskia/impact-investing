@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { api } from "~/trpc/react";
 import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 // interface AnswersState {
 //   "1": string;
@@ -38,7 +38,7 @@ function Questionnaire() {
   const [answers, setAnswers] =
     useState<Record<string, string>>(initialAnswers);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const updateAnswer = (questionNumber: number, answer: string) => {
     setAnswers((prevAnswers) => ({
@@ -54,7 +54,7 @@ function Questionnaire() {
   const submitAnswers = async () => {
     updateQuestionnaire.mutate({ questionnaire: JSON.stringify(answers) });
 
-    await router.push("/dashboard/home");
+    // await router.push("/dashboard/home");
   };
 
   return (

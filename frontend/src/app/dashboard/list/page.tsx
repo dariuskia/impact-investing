@@ -11,9 +11,9 @@ export default async function MediaList() {
     redirect("/signin");
   }
 
-  if (!session.user.onboarded) {
-    redirect("/onboard");
-  }
+  // if (!session.user.onboarded) {
+  //   redirect("/onboard");
+  // }
 
   return (
     <main className="flex min-h-screen w-full bg-neutral-50 text-neutral-900">
