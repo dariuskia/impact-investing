@@ -1,8 +1,8 @@
-## Alignly
+## 🌳 Alignly
 **Alignly is a cutting-edge AI-powered web application that enables users to create financial portfolios based on their core beliefs, values, and causes they are passionate about.** By integrating multimedia inputs, including articles and YouTube videos, into our platform, we extract and summarize key points and objectives. This summary is then transformed into an embedding that is compared against a database of S&P 500 companies to find those whose values align with the user's. Finally, Alignly allows users to execute their trades on the Alpaca API, allowing users not just to identify but also to act on their investment decisions directly through the platform. This innovative approach allows users to invest in companies that resonate with their personal ethos, facilitating a new wave of impact investing.
 
-## How we built it
+## 🧱 How we built it
 The foundation of Alignly is built on three primary services: a frontend application, an API service, and a web scraper. The frontend runs on a **Next.js** server and utilizes **React**, **TypeScript**, **TailwindCSS**, and other modern technologies to deliver a seamless user experience. Our API service leverages **FastAPI** for highly performant endpoints, **MongoDB Atlas** for vector searches, and finally integrates with the **Alpaca Markets API** to execute real market-order trades on the NASDAQ. Meanwhile, the web scraper employs OpenAI's **Whisper** for transcriptions and **BeautifulSoup** for article data extraction. Together, these components work in harmony to translate user values into actionable investment strategies.
 
-## What's next for Alignly
+## 🚀 What's next for Alignly
 Looking ahead, Alignly is poised for exciting developments. We plan to expand our database to include a wider range of companies and ESG (Environmental, Social, and Governance) metrics, enhancing our platform's ability to match users with investments that truly reflect their values. Additionally, we aim to introduce new features that further personalize the investment experience, including customizable alerts and more advanced portfolio management tools. As we continue to refine our technology, Alignly is committed to **empowering individuals to make investment decisions that contribute to a more sustainable and equitable world**.
